@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
-
 const MongoClient = require('mongodb').MongoClient;
 const port = 8080;
+app.set('view engine', 'ejs');
+
 
 let db;
 MongoClient.connect('mongodb+srv://colajelly:Jimin2448@cluster0.2knbyz0.mongodb.net/?retryWrites=true&w=majority', function (err, client) {
@@ -15,9 +16,9 @@ MongoClient.connect('mongodb+srv://colajelly:Jimin2448@cluster0.2knbyz0.mongodb.
 
     db = client.db('todoapp');
 
-    db.collection('post').insertOne({ name: "changhyeon", age: 25 }, function (err, result) {
-        console.log('저장완료');
-    });
+    // db.collection('post').insertOne({ name: "changhyeon", age: 25 }, function (err, result) {
+    //     console.log('저장완료');
+    // });
 
     app.listen(port, function () {
         console.log(`listening on ${port}`)
@@ -49,5 +50,14 @@ app.get('/', function (req, res) {
 
 app.get('/write', function (req, res) {
     res.sendFile(__dirname + "/write.html")
+});
+
+app.get('/list', function (req, res) {
+    //몽고디비 post라는 collection 안의 모든 데이터를 가지고 오게 함
+    db.collection('post').find().toArray(function (err, result) {
+        console.log(result);
+        res.render('list.ejs', { posts: result });
+    });
+
 });
 
