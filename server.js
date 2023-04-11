@@ -84,5 +84,8 @@ app.delete('/delete', function (req, res) {
     //요청.body에 담겨온 게시물 번호를 가진 글을 db에서 찾아서 삭제하기.
     db.collection('post').deleteOne(req.body, function (err, result) {
         console.log("삭제완료");
+        res.status(200).send({ message: "성공했습니다" });
+        //응답코드를 보내주세용 (200)은 요청이 성공했다는 뜻.
+        //(400)은 요청이 실패했다는 뜻.
     })
 })

@@ -62,12 +62,21 @@
         $('.delete').click(function (e) {
             let stringNumber = e.target.dataset.id;
             //내가 지금 누른 요소의 data-id를 가지고 와주셈.
+            let pushNow = $(this);
+
             $.ajax({
                 method: 'DELETE',
                 url: '/delete',
                 data: { _id: stringNumber }
             }).done(function (result) {
-
+                //요청이 성공했을 때 실행 할 코드
+                console.log("성공했어용")
+                pushNow.parent('li').fadeOut();
+                //li태그의 부모태그를 서서히 사라지게 해주는 제이커리 문법
+            }).fail(function (xhr, textStatus, errorThrown) {
+                //요청이 실패했을 때 실행 할 코드
+                console.log('실패');
+                console.log(xhr, textStatus, errorThrown);
             });
 
         });
