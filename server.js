@@ -78,3 +78,11 @@ app.get('/list', function (req, res) {
 
 });
 
+app.delete('/delete', function (req, res) {
+    console.log(req.body)
+    req.body._id = parseInt(req.body._id);
+    //요청.body에 담겨온 게시물 번호를 가진 글을 db에서 찾아서 삭제하기.
+    db.collection('post').deleteOne(req.body, function (err, result) {
+        console.log("삭제완료");
+    })
+})
