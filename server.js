@@ -7,6 +7,9 @@ const port = 8080;
 app.set('view engine', 'ejs');
 
 
+app.use('/public', express.static('public'));
+
+
 let db;
 MongoClient.connect('mongodb+srv://colajelly:Jimin2448@cluster0.2knbyz0.mongodb.net/?retryWrites=true&w=majority', function (err, client) {
     //연결되면 할일
@@ -87,5 +90,15 @@ app.delete('/delete', function (req, res) {
         res.status(200).send({ message: "성공했습니다" });
         //응답코드를 보내주세용 (200)은 요청이 성공했다는 뜻.
         //(400)은 요청이 실패했다는 뜻.
+    })
+})
+
+app.get('/detail/:id', function (req, res) {
+    //누군가 detail/~로 접속하면
+    db.collection('post').findOne({ _id: parseInt(req.params.id) }, function (err, result) {
+        //DB에서 {_id: ~} 인 게시물을 찾는다.
+        console.log(result)
+        res.render('detail.ejs', { data: result })
+        //찾은 결과를 detail.ejs로 보낸다.
     })
 })
